@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ScalarConverter.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francesco <francesco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 18:32:32 by francesco         #+#    #+#             */
-/*   Updated: 2024/04/24 22:07:01 by francesco        ###   ########.fr       */
+/*   Updated: 2024/05/15 17:13:46 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "cerrno"
 # include "iostream"
 # include "iomanip"
+# include "string"
+# include <cfloat>
+# include <cmath>
 
 void    print_char(std::string str)
 {
@@ -36,23 +39,15 @@ void    print_char(std::string str)
 
 void    print_float(std::string str)
 {
-    if (str.find('f') != -1)
-        str.erase(str.size() -1);
-    if (str.find('.') != -1)
-    {
-        while (str.size() - 1 > 7)
-            str.erase(str.size() - 1);
-        while (str[str.size() - 1] == '0')
-            str.erase(str.size() -1);
-    }
-    if (str[str.size() -1] == '.')
-        str += "0f";
-    if (str.find('.') == -1)
-        str += ".0f";
-    if (str[str.size() -1] != 'f')
-        str += 'f';
-    std::cout << "float: " << str << std::endl;
-    return ;
+    float   value;
+    float   x;
+    
+    value = atof(str.c_str());
+    x = std::modf(value, &x);
+    if (x == 0)
+        std::cout << "float: " << value << ".0f" << std::endl;
+    else
+        std::cout << "float: " << value << "f" << std::endl; 
 }
 
 void    print_double(std::string str)
@@ -132,7 +127,7 @@ bool    is_float(std::string data)
     
     if (data == "+inff" || data == "-inff" || data == "nanf")
         return (true);
-    if (str[data.size() -1] != 'f')
+    if (data.back() != 'f')
         return (false);
     if (str[0] == '+' || str[0] == '-')
         i++;
@@ -277,24 +272,34 @@ bool    check_inf(std::string str)
     return (false);
 }
 
+bool    float_check_overflow(std::string str)
+{
+    float   value;
+    
+    value = std::atof(str.c_str());
+    if (std::isinf(value))
+        return (true);
+    return (false);
+}
+
 void    converter_float(std::string str)
 {
     double   nb;
     bool     flag = false;
-    nb = atof(str.c_str());
+    nb = std::atof(str.c_str());
     if (check_inf(str) == true)
         return ;
     print_char(str);
-    if (int_check_overflow(str.erase(str.size())))
-       std::cout << "int: " << "Impossible ofw" << std::endl;
+    if (float_check_overflow(str))
+       std::cout << "int: " << "Impossible oflw" << std::endl;
     else
         std::cout << "int: " << static_cast<int>(nb) << std::endl;
-    if (nb >= static_cast<float>(INT_MAX) || nb <= static_cast<float>(INT_MIN))
-        std::cout << "float: " << nb << "f" << std::endl;
+    if (float_check_overflow(str))
+        std::cout << "float: inff" << std::endl;
     else
         print_float(str);
     if (nb >= static_cast<double>(INT_MAX) || nb <= static_cast<double>(INT_MIN))
-        std::cout << "double: " << nb << std::endl;
+        std::cout << "double: " << static_cast<double>(nb) << std::endl;
     else
         print_double(str);
 }
