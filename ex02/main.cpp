@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francesco <francesco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 17:58:35 by francesco         #+#    #+#             */
-/*   Updated: 2024/04/25 18:31:04 by francesco        ###   ########.fr       */
+/*   Updated: 2024/05/16 17:20:53 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include "C.hpp"
 #include "Base.hpp"
 #include <cstdlib>
+#include <ctime>
 
 Base *generate(void)
 {
-    srand(time(nullptr));
+    std::srand(std::time(nullptr));
     int x = std::rand() % 3;
     if (x == 0)
         return (new A);
