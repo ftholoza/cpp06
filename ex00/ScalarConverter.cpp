@@ -6,7 +6,7 @@
 /*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 18:32:32 by francesco         #+#    #+#             */
-/*   Updated: 2024/05/28 14:35:14 by ftholoza         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:13:24 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,10 +247,7 @@ void    converter_int(std::string str)
         std::cout << "int: " << "impossible oflw" << std::endl;
     else
         std::cout << "int: " << std::atoi(str.c_str()) << std::endl; 
-    if (float_check_overflow(str))
-        std::cout << "float: " << nb << "f" << std::endl;
-    else
-        print_float(str);
+    print_float(str);
     print_double(str);
 }
 
