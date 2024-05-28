@@ -6,7 +6,7 @@
 /*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 18:32:32 by francesco         #+#    #+#             */
-/*   Updated: 2024/05/16 16:36:09 by ftholoza         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:35:14 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void    print_float(std::string str)
     value = atof(str.c_str());
     x = std::modf(value, &x);
     if (x == 0)
-       std::cout << "float: " << value << ".0f" << std::endl;
+       std::cout << "float: " << std::fixed << std::setprecision(1) << value << "f" << std::endl;
     else
-        std::cout << "float: " << value << "f" << std::endl; 
+        std::cout << "float: " << std::fixed << value << "f" << std::endl; 
 }
 
 void    print_double(std::string str)
@@ -58,9 +58,9 @@ void    print_double(std::string str)
     value = atof(str.c_str());
     x = std::modf(value, &x);
     if (x == 0)
-        std::cout << "double: " << value << ".0" << std::endl;
+        std::cout << "double: " << std::fixed << std::setprecision(1) << value << std::endl;
     else
-        std::cout << "double: " << value << std::endl;
+        std::cout << "double: " << std::fixed << value << std::endl;
 }
 
 bool     is_digit(std::string data)
@@ -176,8 +176,10 @@ bool    int_check_overflow(std::string str)
     }
     if (str.back() == 'f')
         str.erase(str.size() - 1);
-    if (str.size() == 11)
+    if (str.size() >= 11)
     {
+        if (str.front() != '-' || str.front() != '+')
+            return (true);
         if (str.front() == '-' && str.compare("-2147483648") > 0)
             return (true);
         if (str.front() == '+' && str.compare("+2147483647") > 0) 
@@ -191,11 +193,7 @@ bool    int_check_overflow(std::string str)
     {
         if (str.compare("2147483647") > 0)
             return (true);
-        if (str.compare("2147483647") <= 0)
-            return (false);
     }
-    if (str.size() > 11)
-        return (true);
     return (false);
 }
 
