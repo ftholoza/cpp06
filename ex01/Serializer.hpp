@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Serializer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francesco <francesco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 15:01:48 by francesco         #+#    #+#             */
-/*   Updated: 2024/04/25 15:36:04 by francesco        ###   ########.fr       */
+/*   Updated: 2024/05/29 20:53:21 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERIALZER_HPP
+#ifndef SERIALIZER_HPP
 # define SERIALIZER_HPP
 
 # include "struct.hpp"
 # include <iostream>
-# include <cstdint>
+# include <stdint.h>
 
 class Serializer
 {

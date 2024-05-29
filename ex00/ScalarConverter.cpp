@@ -6,7 +6,7 @@
 /*   By: ftholoza <ftholoza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 18:32:32 by francesco         #+#    #+#             */
-/*   Updated: 2024/05/28 18:13:24 by ftholoza         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:01:55 by ftholoza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ bool    is_char(std::string data)
         return (false);
     else
     {
-        if (isascii(data.front()) && isprint(data.front()) && !is_digit(data))
+        if (isascii(data.c_str()[0]) && isprint(data.c_str()[0]) && !is_digit(data))
             return (true);
         else
             return (false);
@@ -98,12 +98,11 @@ bool    is_char(std::string data)
 bool    is_int(std::string data)
 {
     const char *str = data.c_str();
-    bool        flag = false;
     int         i = 0;
     
     if (str[0] == '+' || str[0] == '-')
         i++;
-    while (i < data.size())
+    while ((size_t)i < data.size())
     {
         if (std::isdigit(str[i]))
             i++;
@@ -118,16 +117,19 @@ bool    is_float(std::string data)
     const char *str = data.c_str();
     bool        flag = false;
     int         i = 0;
+    int         x = 0;
     
     if (data == "+inff" || data == "-inff" || data == "inff" || data == "nanf")
         return (true);
-    if (data.back() != 'f')
+    for (int j = 0; str[j]; j++)
+        x++;
+    if (str[x - 1] != 'f')
         return (false);
     if (str[0] == '+' || str[0] == '-')
         i++;
     if (str[i] == '.')
         return false;
-    while (i < data.size() - 1)
+    while (i < (int)data.size() - 1)
     {
         if (str[i] == '.' && flag == false)
         {
@@ -148,7 +150,7 @@ bool    float_check_overflow(std::string str)
 {
     float   value;
     
-    value = std::atof(str.c_str());
+    value = atof(str.c_str());
     if (std::isinf(value))
         return (true);
     return (false);
@@ -158,7 +160,7 @@ bool    double_check_overflow(std::string str)
 {
     double  value;
     
-    value = std::atof(str.c_str());
+    value = atof(str.c_str());
     if (std::isinf(value))
         return (true);
     return (false);
@@ -167,26 +169,29 @@ bool    double_check_overflow(std::string str)
 bool    int_check_overflow(std::string str)
 {
     int i;
+    int x = 0;
     
-    if (str.find('.') != -1)
+    if ((int)str.find('.') != -1)
     {
         i = str.find('.');
-        while (str.size() != i)
+        while ((int)str.size() != i)
             str.erase(str.size() - 1);      
     }
-    if (str.back() == 'f')
-        str.erase(str.size() - 1);
+    for (int j = 0; str[j]; j++)
+        x++;
+    if (str[x - 1] != 'f')
+        str.erase(x - 1);
     if (str.size() >= 11)
     {
-        if (str.front() != '-' || str.front() != '+')
+        if (str.c_str()[0] != '-' || str.c_str()[0] != '+')
             return (true);
-        if (str.front() == '-' && str.compare("-2147483648") > 0)
+        if (str.c_str()[0] == '-' && str.compare("-2147483648") > 0)
             return (true);
-        if (str.front() == '+' && str.compare("+2147483647") > 0) 
+        if (str.c_str()[0] == '+' && str.compare("+2147483647") > 0) 
             return (true);
-        if (str.front() == '-' && str.compare("-2147483648") <= 0)
+        if (str.c_str()[0] == '-' && str.compare("-2147483648") <= 0)
             return (false);
-        if (str.front() == '+' && str.compare("+2147483647") <= 0) 
+        if (str.c_str()[0] == '+' && str.compare("+2147483647") <= 0) 
             return (false);
     }
     if (str.size() == 10)
@@ -211,7 +216,7 @@ bool    is_double(std::string data)
         i++;
     if (str[i] == '.')
         return false;
-    while (i < data.size())
+    while (i < (int)data.size())
     {
         if (str[i] == '.' && flag == false)
         {
@@ -228,25 +233,25 @@ bool    is_double(std::string data)
 
 void    converter_char(std::string str)
 {
-    if (!std::isprint(str.front()))
+    if (!std::isprint(str.c_str()[0]))
         std::cout << "char: Non displayable" << std::endl;
     else
-        std::cout << "char: " << str.front() << std::endl;
-    std::cout << "int: " << static_cast<int>(str.front()) << std::endl;
-    std::cout << "float: " << static_cast<float>(str.front()) << ".0f" << std::endl;
-    std::cout << "double: " << static_cast<double>(str.front()) << ".0" << std::endl;
+        std::cout << "char: " << str.c_str()[0] << std::endl;
+    std::cout << "int: " << static_cast<int>(str.c_str()[0]) << std::endl;
+    std::cout << "float: " << static_cast<float>(str.c_str()[0]) << ".0f" << std::endl;
+    std::cout << "double: " << static_cast<double>(str.c_str()[0]) << ".0" << std::endl;
 }
 
 void    converter_int(std::string str)
 {
     int nb;
 
-    nb = std::atoi(str.c_str());
+    nb = atoi(str.c_str());
     print_char(str);
     if (int_check_overflow(str) == true)
         std::cout << "int: " << "impossible oflw" << std::endl;
     else
-        std::cout << "int: " << std::atoi(str.c_str()) << std::endl; 
+        std::cout << "int: " << atoi(str.c_str()) << std::endl; 
     print_float(str);
     print_double(str);
 }
@@ -275,8 +280,7 @@ bool    check_inf(std::string str)
 void    converter_float(std::string str)
 {
     double   nb;
-    bool     flag = false;
-    nb = std::atof(str.c_str());
+    nb = atof(str.c_str());
     if (check_inf(str) == true)
         return ;
     print_char(str);
